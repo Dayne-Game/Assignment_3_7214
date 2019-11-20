@@ -26,4 +26,11 @@ cd mongodb
 mongo mongo-script setup.js
 ```
 
-Everything should be running!
+To Run Everything:
+
+to Run Client (Frontend) Be in client Folder
+```npm start```
+
+To Run Express be in express_api folder
+
+```npm start```
