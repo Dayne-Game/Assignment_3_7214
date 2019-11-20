@@ -32,6 +32,9 @@ router.get('/:id', function( req, res, next){
     .catch(err => next(err));
 });
 
+//@route   GET /api/posts/user/:uid
+//@desc    Get all posts associated to the current logged in user
+//@access  Public
 router.get('/user/:uid', function( req, res){  
     posts
     .find({uid: req.params.uid}) 

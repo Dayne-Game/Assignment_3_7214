@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { ListGroup, ListGroupItem, Button, UncontrolledAlert } from 'reactstrap'
+import { ListGroup, ListGroupItem, Button } from 'reactstrap'
 import { Link } from 'react-router-dom'
-import { CSSTransition, TransitionGroup } from 'react-transition-group'
 
 // Get Posts to display on the Home Page
 let GetUsersPosts = async (mystate, id) => {
@@ -48,7 +47,6 @@ const UsersPosts = (props) => {
 
 // Delete POST METHOD
 let DeletePost = (id) => {
-    const token = localStorage.getItem('a3_myJwtSecret');
     fetch(`http://localhost:5000/api/posts/${id}`, {
         method: 'DELETE',
         headers: {

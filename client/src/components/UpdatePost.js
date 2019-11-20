@@ -2,7 +2,7 @@ import React, { useEffect, useState, Fragment } from 'react'
 import { Button, Container, Row, Col, Label, Input,  Form, FormGroup} from 'reactstrap'
 import Markdown from 'react-markdown';
 import ReactDOM from 'react-dom'
-import AppNavbar from './AppNavbar'
+import AddPostNavbar from './AddPostNavbar'
 
 export default function UpdatePost(props) {
 
@@ -17,7 +17,7 @@ export default function UpdatePost(props) {
 
     return (
         <Fragment>
-            <AppNavbar />
+            <AddPostNavbar/>
             <Container fluid={true}>
                 <Row>
                     <Col>
@@ -58,11 +58,6 @@ export default function UpdatePost(props) {
 let MarkdownToHTML = (input, output) => {
     var content = document.getElementById(`${input}`).value
     ReactDOM.render(<Markdown source={content} />, document.getElementById(`${output}`));
-}
-
-let dayne = (title) => {
-    var t = document.getElementById(`${title}`).value
-    console.log(t)
 }
 
 // Get the Selected Post
