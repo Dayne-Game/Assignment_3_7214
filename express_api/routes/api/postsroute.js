@@ -26,8 +26,7 @@ router.get('/:id', function( req, res, next){
     posts
     .findById(req.params.id) 
     .then(postFound => {
-        console.log(postFound);
-        if(!postFound) { return res.status(404).json({msg: "Post not Found"}); }
+        if(!postFound) { return res.status(404).json([{msg: "Post not Found"}]); }
         return res.status(200).json(postFound);
     }) 
     .catch(err => next(err));
@@ -37,9 +36,8 @@ router.get('/user/:uid', function( req, res){
     posts
     .find({uid: req.params.uid}) 
     .sort({uid: 1})  
-    .then( function( uid ){ 
-        console.log(uid);
-        (uid == 0) ? res.json([{"title": `Oops! You Have NO Posts! Get Creating Now!`}]) : res.json( uid );
+    .then( function( uid ){
+        (uid == 0) ? res.json([{title: `Oops! You Have NO Posts! Get Creating Now!`}]) : res.json( uid );
     }) 
     .catch( function( err ){ 
         console.log( err ); 
@@ -50,7 +48,7 @@ router.get('/user/:uid', function( req, res){
 //@route   POST /api/posts
 //@desc    Add a new Post to DB
 //@access  Private
-router.post('/', function(req, res) {
+router.post('/', auth, function(req, res) {
     let newPost = new posts(req.body);
     newPost
     .save(newPost)
@@ -64,6 +62,19 @@ router.post('/', function(req, res) {
         })
     })
 });
+
+//@route PUT /api/posts/:id
+//@desc Update selected Post
+//@access Private
+router.put('/:id', auth, function(req, res) {
+    posts.findByIdAndUpdate({_id: req.params.id}, req.body, { new: true, useFindAndModify: false })
+    .then(() => {
+        res.json({ success: 'Post Updated' })
+    })
+    .catch(err => {
+        res.status(404).json({ error: err })
+    })
+})
 
 //@route    DELETE /api/posts/:id
 //@desc     Delete a name from the DB by _id key 

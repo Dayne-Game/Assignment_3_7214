@@ -11,6 +11,8 @@ import store from './store'
 
 import { loadUser } from './actions/authActions'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import AddPost from "./components/AddPost";
+import UpdatePost from "./components/UpdatePost";
 
 class App extends Component {
 	componentDidMount() {
@@ -28,6 +30,8 @@ class App extends Component {
 					</div>
 					<Route path="/Dashboard" component={Dashboard} />
 					<Route path="/Post" component={Post} />
+					<Route path="/AddPost/:id" component={AddPost} />
+					<Route path="/UpdatePost/:id" component={UpdatePost} />
 				</Router>
 			</Provider>
 		);

@@ -26,7 +26,7 @@ app.use('/api/auth', require('./routes/api/auth'))
 
 const db = config.get('mongoURI');
 
-mongoose.connect(db, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true})
+mongoose.connect(db, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false})
     .then(function() {
         console.log('MongoDB Connected...');
     })

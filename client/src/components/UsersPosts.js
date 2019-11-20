@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { Nav, NavItem, Button } from 'reactstrap'
+import { ListGroup, ListGroupItem, Button, UncontrolledAlert } from 'reactstrap'
 import { Link } from 'react-router-dom'
+import { CSSTransition, TransitionGroup } from 'react-transition-group'
 
 // Get Posts to display on the Home Page
 let GetUsersPosts = async (mystate, id) => {
@@ -11,40 +12,54 @@ let GetUsersPosts = async (mystate, id) => {
 }
 
 const UsersPosts = (props) => {
-
     // Props.myID is userID from the Dashboard Component
 
     const [ remoteData, setData ] = useState({ posts: [] })
+
     console.log(props.myID)
 
     useEffect(() => {
         GetUsersPosts(setData, props.myID)
-    }, [])
+    }, [props.myID])
 
     return (
-        <Nav vertical>
+        <ListGroup>
             {remoteData.posts.map((p, i) => {
-
-                if(p.title === "Oops! You Have NO Posts! Get Creating Now!") {
+                if(p.title === `Oops! You Have NO Posts! Get Creating Now!` || p.title === undefined) {
                     return (
-                        <NavItem>
-                            <p>{p.title}</p>
-                        </NavItem>
+                        <ListGroupItem key={i}>
+                            {p.title}
+                        </ListGroupItem>
                     )
                 } else {
                     // Remove # from myPost.title
                     var title = p.title.replace('#', '');
                     return (
-                        <NavItem key={i} className="item-deco">
-                            <Link className="nav-link custom-nav-link mb-2" to={{ pathname: '/Post', state: { postID: p._id } }}>{title}</Link>
-                            <Button color="danger" className="mr-2">Delete</Button>
-                            <Button color="info">Update</Button>
-                        </NavItem>
+                        <ListGroupItem key={i} className="item-deco">
+                            <Button onClick={() => DeletePost(p._id)} color="danger" size="sm">&times;</Button>
+                            <Link className="posts-link" to={`/UpdatePost/${p._id}`}>{title}</Link>
+                        </ListGroupItem>
                     )
                 }
             })}
-        </Nav>
+        </ListGroup>
     )
+}
+
+// Delete POST METHOD
+let DeletePost = (id) => {
+    const token = localStorage.getItem('a3_myJwtSecret');
+    fetch(`http://localhost:5000/api/posts/${id}`, {
+        method: 'DELETE',
+        headers: {
+            // Grab current signed in users Token!
+            'x-auth-token': localStorage.getItem('token')
+        }
+    }).then(res => res.json())
+    .then(response => {
+        alert(`Success: ${response.success}`);
+        window.location.reload();
+    })
 }
 
 export default UsersPosts;
